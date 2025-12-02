@@ -1,0 +1,110 @@
+
+html, body, * {
+  box-sizing: border-box;
+}
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
+    Arial;
+  background: #ffffff;
+  color: #111827;
+}
+
+
+.bg {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+}
+
+.card {
+  width: 400px;
+  max-width: 100%;
+  height: 520px;
+  padding: 20px;
+  background: #d1d5db;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 50px;
+}
+
+.card-inner {
+  background: #ffffff;
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-image {
+  flex: 3;
+  width: 100%;
+}
+.card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.card-image2 {
+  flex: 3;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  background-color: #f3f4f6;
+}
+
+.card-content {
+  flex: 2;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+.card-content h2 {
+  font-size: 1.5rem;
+  margin: 0 0 6px 0;
+  font-weight: 700;
+}
+.card-content p {
+  font-size: 0.95rem;
+  line-height: 1.45;
+  color: #4b5563;
+  margin: 0;
+}
+
+.btn {
+  margin-top: 12px;
+  align-self: center;
+  padding: 10px 16px;
+  background: #374151;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.btn:hover {
+  background: #1f2937;
+}
+
+
+@media (max-width: 640px) {
+  .card {
+    width: 100%;
+  }
+}
