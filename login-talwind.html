@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-black min-h-screen flex items-center justify-center">
+    <div class="bg-gradient-to-br from-purple-900 to-black border-2 border-purple-500 rounded-lg shadow-2xl p-8 w-96">
+        <h2 class="text-3xl font-bold text-center text-purple-300 mb-6">L M S</h2>
+        
+        <form>
+            
+            <div class="mb-4">
+                <label for="username" class="block text-purple-300 text-sm font-semibold mb-2">Username</label>
+                <input 
+                    type="text" 
+                    id="username" 
+                    name="username" 
+                    class="w-full px-4 py-3 bg-black border-2 border-purple-600 text-purple-200 rounded-lg focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-500 transition duration-300"
+                    placeholder="Enter your username">
+            </div>
+            
+            <div class="mb-6">
+                <label for="password" class="block text-purple-300 text-sm font-semibold mb-2">Password</label>
+                <input 
+                    type="password" 
+                    id="password" 
+                    name="password" 
+                    class="w-full px-4 py-3 bg-black border-2 border-purple-600 text-purple-200 rounded-lg focus:outline-none focus:border-purple-400 focus:ring-2 focus:ring-purple-500 transition duration-300"
+                    placeholder="Enter your password">
+            </div>
+            
+            <button 
+                type="submit" 
+                class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300 shadow-lg hover:shadow-purple-500/50">
+                Login
+            </button>
+        </form>
+        
+        <div class="mt-6 text-center">
+            <a href="#" class="text-purple-400 hover:text-purple-300 text-sm">Forgot Password?</a>
+        </div>
+        
+        <div class="mt-4 text-center">
+            <p class="text-purple-300 text-sm">Don't have an account? 
+                <a href="#" class="text-purple-400 hover:text-purple-300 font-semibold">Sign Up</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>

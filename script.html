@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <title>Document</title>
+</head>
+<body>
+    <form class="p-10 border-2 border-gray-300 rounded-lg shadow-lg max-w-[350px] mx-auto mt-20 bg-white bg-gradient-to-b from-purple-500 to-stone-950">
+        <div class="flex flex-row justify-between items-baseline">
+            <label for="name" class="block text-gray-700 font-bold mb-2 text-white">Name:</label>
+            <input type="text" id="name" class="border-2 border-stone-950 text-white mt-2">
+        </div>
+        <div class="flex flex-row justify-between items-baseline">   
+            <label for="password" class="block text-gray-700 font-bold mb-2 mt-4 text-white">Password:</label>
+            <input type="password" id="password" class="border-2 border-stone-950 text-white mt-6">
+        </div>
+        <div class="justify-center items-center flex flex-col mt-4"> 
+            <p id="error"></p>
+            <button type="button" class="cursor-pointer bg-orange-200 px-4 py-2 rounded mt-4" id="submit">Submit</button>
+        </div>
+    </form>
+    <script type="module" src="script.js"></script>
+</body>
+</html>
