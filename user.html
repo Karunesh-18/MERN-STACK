@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+        <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body>
+    <div class="p-5 m-15 shadow-2xl rounded-lg mx-auto w-[500px] h-[400px]">
+            <h1 class="text-center text-2xl font-bold mb-5">User Details</h1>
+        <div id="details"></div>
+
+        <div class="flex justify-between items-center mt-6" style="gap:8px">
+            <button id="prevBtn" class="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">Prev</button>
+            <div id="userCounter" class="text-sm text-gray-600"></div>
+            <button id="nextBtn" class="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300">Next</button>
+        </div>
+    </div>
+
+    <script src="user.js"></script>
+</body>
+</html>
