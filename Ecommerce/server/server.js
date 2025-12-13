@@ -1,10 +1,10 @@
 const express = require('express');
 const cors = require('cors');
-const session = require('express-session');
 const authRoutes = require('./routes/auth');
 const productsRoutes = require('./routes/products');
 const cartRoutes = require('./routes/cart');
 const connectDB = require('./config/db');
+const studentsRoutes = require('./routes/students');
 
 connectDB();
 
@@ -18,15 +18,10 @@ app.use(cors({
 
 app.use(express.json());
 
-app.use(session({
-  secret: 'your-secret-key-here',
-  resave: false,
-  saveUninitialized: false,
-  cookie: { secure: false, httpOnly: true, maxAge: 24 * 60 * 60 * 1000 }
-}));
 
 app.use('/api', authRoutes);
 app.use('/api/products', productsRoutes);
+app.use('/api/students', studentsRoutes);
 app.use('/api/cart', cartRoutes);
 
 app.listen(PORT, () => {

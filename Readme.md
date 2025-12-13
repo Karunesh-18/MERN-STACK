@@ -193,6 +193,25 @@ Building complete order flow from cart to checkout with order creation and histo
 
 ---
 
+## 📅 Day 10: December 13, 2025
+
+### MVC Architecture Pattern
+Organizing backend code into Model-View-Controller structure for better code organization. Separating data logic (Model), business logic (Controller), and presentation concerns for maintainable applications.
+
+### Controller Layer Separation
+Extracting route handler logic into dedicated controller files (productController, studentController). Keeps routes clean and focused on endpoint definitions while controllers handle business logic and data operations.
+
+### Schema Design & Validation
+Creating MongoDB schemas with data validation rules (required fields, unique constraints, min/max values). Ensures data integrity with built-in Mongoose validators and automatic timestamps for tracking record creation and updates.
+
+### RESTful API Refinement
+Implementing clean separation between route definitions and controller logic following best practices. Improved code maintainability, testability, and scalability of API endpoints with organized file structure.
+
+### Student Management System
+Building a complete CRUD API for managing student records with schema validation. Implementing endpoints for creating, reading, updating, and deleting student data with proper error handling.
+
+---
+
 ## 🎯 Overall Project Structure
 
 ### Root Level Projects
@@ -230,6 +249,8 @@ Building complete order flow from cart to checkout with order creation and histo
    - Authentication system
    - Product and cart management
    - Protected routes
+   - MVC architecture with controllers
+   - Student management system
 
 ---
 
@@ -248,9 +269,11 @@ Building complete order flow from cart to checkout with order creation and histo
 - Node.js
 - Express.js
 - MongoDB
-- Mongoose
+- Mongoose ODM
 - REST API Design
+- MVC Architecture
 - File System Operations
+- JWT Authentication
 
 ### Development Tools
 - ESLint
@@ -269,6 +292,7 @@ Building complete order flow from cart to checkout with order creation and histo
 5. **Database Operations**: Worked with both JSON files and MongoDB
 6. **Authentication**: Implemented secure user authentication systems
 7. **Real-World Projects**: Built multiple e-commerce applications from scratch
+8. **Code Organization**: Applied MVC pattern for maintainable and scalable code structure
 
 ---
 
@@ -315,6 +339,6 @@ Using JavaScript for both front-end and back-end development:
 
 ---
 
-**Last Updated**: December 12, 2025  
-**Total Days of Learning**: 9 days  
+**Last Updated**: December 13, 2025  
+**Total Days of Learning**: 10 days  
 **Total Files Created**: 100+ files across multiple projects
