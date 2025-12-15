@@ -1,103 +1,98 @@
 const express = require('express');
 const router = express.Router();
-const { readJSONFile, writeJSONFile } = require('../utils/fileOperations');
-const path = require('path');
-
-const productsFile = path.join(__dirname, '..', 'products.json');
+const Product = require('../model/product');
+const authMiddleware = require('../middlewares/authMiddleware');
+const {
+  ValidateProductData,
+  AdminOnly,
+  SanitizeProductData
+} = require('../middlewares/productMiddleware');
 
 router.get('/', async (req, res) => {
-  const products = await readJSONFile(productsFile);
-  res.json(products);
+  try {
+    const products = await Product.find();
+    res.json(products);
+  } catch (error) {
+    console.error('Failed to fetch products:', error);
+    res.status(500).json({ message: 'Failed to fetch products' });
+  }
 });
 
 router.get('/:id', async (req, res) => {
-  const products = await readJSONFile(productsFile);
-  const product = products.find(p => p.id === parseInt(req.params.id));
-  
-  if (product) {
-    res.json(product);
-  } else {
-    res.status(404).json({ message: 'Product not found' });
+  try {
+    const product = await Product.findById(req.params.id);
+    
+    if (product) {
+      res.json(product);
+    } else {
+      res.status(404).json({ message: 'Product not found' });
+    }
+  } catch (error) {
+    console.error('Failed to fetch product:', error);
+    res.status(500).json({ message: 'Failed to fetch product' });
   }
 });
 
-router.post('/', async (req, res) => {
-  if (!req.session.isLoggedIn || req.session.role !== 'admin') {
-    return res.status(403).json({ message: 'Unauthorized. Admin access required.' });
-  }
+router.post('/', authMiddleware, AdminOnly, SanitizeProductData, ValidateProductData, async (req, res) => {
+  try {
+    const newProduct = new Product({
+      ...req.body,
+      createdAt: new Date()
+    });
 
-  const products = await readJSONFile(productsFile);
-  const newProduct = {
-    id: products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1,
-    ...req.body,
-    createdAt: new Date().toISOString()
-  };
-
-  products.push(newProduct);
-  const success = await writeJSONFile(productsFile, products);
-
-  if (success) {
+    const savedProduct = await newProduct.save();
     res.status(201).json({
       success: true,
       message: 'Product added successfully',
-      product: newProduct
+      product: savedProduct
     });
-  } else {
+  } catch (error) {
+    console.error('Failed to add product:', error);
     res.status(500).json({ message: 'Failed to add product' });
   }
 });
 
-router.put('/:id', async (req, res) => {
-  if (!req.session.isLoggedIn || req.session.role !== 'admin') {
-    return res.status(403).json({ message: 'Unauthorized. Admin access required.' });
-  }
+router.put('/:id', authMiddleware, AdminOnly, SanitizeProductData, ValidateProductData, async (req, res) => {
+  try {
+    const updatedProduct = await Product.findByIdAndUpdate(
+      req.params.id,
+      {
+        ...req.body,
+        updatedAt: new Date()
+      },
+      { new: true }
+    );
 
-  const products = await readJSONFile(productsFile);
-  const index = products.findIndex(p => p.id === parseInt(req.params.id));
-
-  if (index !== -1) {
-    products[index] = {
-      ...products[index],
-      ...req.body,
-      id: products[index].id,
-      updatedAt: new Date().toISOString()
-    };
-
-    const success = await writeJSONFile(productsFile, products);
-    if (success) {
+    if (updatedProduct) {
       res.json({
         success: true,
         message: 'Product updated successfully',
-        product: products[index]
+        product: updatedProduct
       });
     } else {
-      res.status(500).json({ message: 'Failed to update product' });
+      res.status(404).json({ message: 'Product not found' });
     }
-  } else {
-    res.status(404).json({ message: 'Product not found' });
+  } catch (error) {
+    console.error('Failed to update product:', error);
+    res.status(500).json({ message: 'Failed to update product' });
   }
 });
 
-router.delete('/:id', async (req, res) => {
-  if (!req.session.isLoggedIn || req.session.role !== 'admin') {
-    return res.status(403).json({ message: 'Unauthorized. Admin access required.' });
-  }
+router.delete('/:id', authMiddleware, AdminOnly, async (req, res) => {
+  try {
+    const deletedProduct = await Product.findByIdAndDelete(req.params.id);
 
-  const products = await readJSONFile(productsFile);
-  const filteredProducts = products.filter(p => p.id !== parseInt(req.params.id));
-
-  if (filteredProducts.length < products.length) {
-    const success = await writeJSONFile(productsFile, filteredProducts);
-    if (success) {
+    if (deletedProduct) {
       res.json({
         success: true,
         message: 'Product deleted successfully'
       });
     } else {
-      res.status(500).json({ message: 'Failed to delete product' });
+      res.status(404).json({ message: 'Product not found' });
     }
-  } else {
-    res.status(404).json({ message: 'Product not found' });
+  } catch (error) {
+    console.error('Failed to delete product:', error);
+    res.status(500).json({ message: 'Failed to delete product' });
   }
 });
 

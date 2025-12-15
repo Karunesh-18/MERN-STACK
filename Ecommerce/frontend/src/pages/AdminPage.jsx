@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import axios from 'axios';
+import API_BASE_URL from '../config/api';
 
 function AdminPage() {
   const [products, setProducts] = useState([]);
@@ -23,7 +24,7 @@ function AdminPage() {
 
   const fetchProducts = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/api/products');
+      const response = await axios.get(`${API_BASE_URL}/api/products`);
       const data = response.data;
       setProducts(data);
     } catch (error) {
@@ -51,26 +52,35 @@ function AdminPage() {
     };
 
     try {
+      const token = sessionStorage.getItem('token');
       const url = editingProduct 
-        ? `http://localhost:3000/api/products/${editingProduct.id}`
-        : 'http://localhost:3000/api/products';
+        ? `${API_BASE_URL}/api/products/${editingProduct._id}`
+        : `${API_BASE_URL}/api/products`;
       
       const response = editingProduct 
-        ? await axios.put(url, productData, { withCredentials: true })
-        : await axios.post(url, productData, { withCredentials: true });
+        ? await axios.put(url, productData, {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          })
+        : await axios.post(url, productData, {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          });
 
       const data = response.data;
 
       if (data.success) {
-        alert(editingProduct ? 'Product updated successfully!' : 'Product added successfully!');
+        console.log(editingProduct ? 'Product updated successfully!' : 'Product added successfully!');
         fetchProducts();
         resetForm();
       } else {
-        alert(data.message || 'Operation failed');
+        console.log(data.message || 'Operation failed');
       }
     } catch (error) {
       console.error('Failed to save product:', error);
-      alert('Failed to save product');
+      console.log('Failed to save product');
     }
   };
 
@@ -91,20 +101,23 @@ function AdminPage() {
     if (!confirm('Are you sure you want to delete this product?')) return;
 
     try {
-      const response = await axios.delete(`http://localhost:3000/api/products/${id}`, {
-        withCredentials: true
+      const token = sessionStorage.getItem('token');
+      const response = await axios.delete(`${API_BASE_URL}/api/products/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       });
 
       const data = response.data;
       if (data.success) {
-        alert('Product deleted successfully!');
+        console.log('Product deleted successfully!');
         fetchProducts();
       } else {
-        alert(data.message || 'Delete failed');
+        console.log(data.message || 'Delete failed');
       }
     } catch (error) {
       console.error('Failed to delete product:', error);
-      alert('Failed to delete product');
+      console.log('Failed to delete product');
     }
   };
 
@@ -136,7 +149,6 @@ function AdminPage() {
           </button>
         </div>
 
-        {/* Add/Edit Product Form */}
         {showForm && (
           <div className="bg-white rounded-lg p-6 mb-6 shadow-md">
             <h2 className="text-2xl font-bold mb-4">
@@ -243,7 +255,6 @@ function AdminPage() {
           </div>
         )}
 
-        {/* Products List */}
         <div className="bg-white rounded-lg p-6 shadow-md">
           <h2 className="text-2xl font-bold mb-4">Products List ({products.length})</h2>
           
@@ -269,8 +280,8 @@ function AdminPage() {
                 </thead>
                 <tbody className="divide-y">
                   {products.map(product => (
-                    <tr key={product.id} className="hover:bg-gray-50">
-                      <td className="px-4 py-3 text-sm">{product.id}</td>
+                    <tr key={product._id} className="hover:bg-gray-50">
+                      <td className="px-4 py-3 text-sm">{product._id}</td>
                       <td className="px-4 py-3">
                         <img src={product.image} alt={product.title} className="w-12 h-12 object-cover rounded" />
                       </td>
@@ -287,7 +298,7 @@ function AdminPage() {
                             Edit
                           </button>
                           <button
-                            onClick={() => handleDelete(product.id)}
+                            onClick={() => handleDelete(product._id)}
                             className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 text-sm"
                           >
                             Delete

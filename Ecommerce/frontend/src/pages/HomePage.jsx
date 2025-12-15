@@ -3,6 +3,7 @@ import axios from 'axios';
 import Navbar from '../components/Navbar';
 import ProductCard from '../components/ProductCard';
 import Footer from '../components/Footer';
+import API_BASE_URL from '../config/api';
 
 function HomePage() {
   const [topProducts, setTopProducts] = useState([]);
@@ -14,9 +15,8 @@ function HomePage() {
 
   const fetchProducts = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/api/products');
+      const response = await axios.get(`${API_BASE_URL}/api/products`);
       const data = response.data;
-      // Get top 3 products with discount
       const dealsProducts = data.filter(p => p.discount > 0).slice(0, 3);
       setTopProducts(dealsProducts);
     } catch (error) {
@@ -42,7 +42,6 @@ function HomePage() {
       <Navbar />
 
       <div className="max-w-full mx-auto px-4 py-6">
-        {/* Hero Banner */}
         <div className="mb-6">
           <div className="relative rounded-lg overflow-hidden h-[400px] bg-gradient-to-r from-blue-600 to-purple-600">
             <div className="absolute inset-0 bg-gradient-to-r from-black/50 to-transparent"></div>
@@ -58,7 +57,6 @@ function HomePage() {
           </div>
         </div>
 
-        {/* Today's Deals */}
         <div className="bg-white rounded-lg p-6 mb-6">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-2xl font-bold">Today's Deals – All With Free Shipping</h3>
@@ -69,13 +67,12 @@ function HomePage() {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {topProducts.map(product => (
-                <ProductCard key={product.id} product={product} showDiscount={true} />
+                <ProductCard key={product._id} product={product} showDiscount={true} />
               ))}
             </div>
           )}
         </div>
 
-        {/* Categories */}
         <div className="bg-white rounded-lg p-6 mb-6">
           <h3 className="text-2xl font-bold mb-4">Shop by Category</h3>
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4">

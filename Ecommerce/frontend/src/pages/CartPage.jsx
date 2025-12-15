@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import API_BASE_URL from '../config/api';
 
 function CartPage() {
   const [cart, setCart] = useState([]);
@@ -13,7 +14,12 @@ function CartPage() {
 
   const fetchCart = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/api/cart');
+      const token = sessionStorage.getItem('token');
+      const response = await axios.get(`${API_BASE_URL}/api/cart`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
       const data = response.data;
       setCart(data);
     } catch (error) {
@@ -25,9 +31,14 @@ function CartPage() {
 
   const updateQuantity = async (id, newQuantity) => {
     try {
-      const response = await axios.put(`http://localhost:3000/api/cart/${id}`, 
+      const token = sessionStorage.getItem('token');
+      const response = await axios.put(`${API_BASE_URL}/api/cart/${id}`, 
         { quantity: newQuantity },
-        { withCredentials: true }
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
       );
       const data = response.data;
       if (data.success) {
@@ -40,8 +51,11 @@ function CartPage() {
 
   const removeItem = async (id) => {
     try {
-      const response = await axios.delete(`http://localhost:3000/api/cart/${id}`, {
-        withCredentials: true
+      const token = sessionStorage.getItem('token');
+      const response = await axios.delete(`${API_BASE_URL}/api/cart/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       });
       const data = response.data;
       if (data.success) {
@@ -55,8 +69,11 @@ function CartPage() {
   const clearCart = async () => {
     if (confirm('Are you sure you want to clear the cart?')) {
       try {
-        const response = await axios.delete('http://localhost:3000/api/cart', {
-          withCredentials: true
+        const token = sessionStorage.getItem('token');
+        const response = await axios.delete(`${API_BASE_URL}/api/cart`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
         });
         const data = response.data;
         if (data.success) {
@@ -104,10 +121,9 @@ function CartPage() {
           </div>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Cart Items */}
             <div className="lg:col-span-2 space-y-4">
               {cart.map(item => (
-                <div key={item.id} className="bg-white rounded-lg p-4 flex gap-4">
+                <div key={item._id} className="bg-white rounded-lg p-4 flex gap-4">
                   <img
                     src={item.productImage}
                     alt={item.productTitle}
@@ -118,14 +134,14 @@ function CartPage() {
                     <p className="text-blue-600 font-bold mb-2">${item.productPrice}</p>
                     <div className="flex items-center gap-2">
                       <button
-                        onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                        onClick={() => updateQuantity(item._id, item.quantity - 1)}
                         className="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300"
                       >
                         -
                       </button>
                       <span className="px-4 py-1 bg-gray-100 rounded">{item.quantity}</span>
                       <button
-                        onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                        onClick={() => updateQuantity(item._id, item.quantity + 1)}
                         className="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300"
                       >
                         +
@@ -134,7 +150,7 @@ function CartPage() {
                   </div>
                   <div className="flex flex-col justify-between items-end">
                     <button
-                      onClick={() => removeItem(item.id)}
+                      onClick={() => removeItem(item._id)}
                       className="text-red-500 hover:text-red-700"
                     >
                       <i className="fas fa-trash"></i>
@@ -147,7 +163,6 @@ function CartPage() {
               ))}
             </div>
 
-            {/* Order Summary */}
             <div className="lg:col-span-1">
               <div className="bg-white rounded-lg p-6 sticky top-4">
                 <h2 className="text-xl font-bold mb-4">Order Summary</h2>

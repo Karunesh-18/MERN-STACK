@@ -16,7 +16,16 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/products" element={<ProductsPage />} />
-          <Route path="/cart" element={<CartPage />} />
+          
+          <Route
+            path="/cart"
+            element={
+              <ProtectedRoute requireAuth={true}>
+                <CartPage />
+              </ProtectedRoute>
+            }
+          />
+          
           <Route path="/login" element={<LoginPage />} />
           
           <Route

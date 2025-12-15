@@ -1,5 +1,6 @@
 import { createContext, useState, useContext, useEffect } from 'react';
 import axios from 'axios';
+import API_BASE_URL from '../config/api';
 
 const AuthContext = createContext();
 
@@ -16,7 +17,6 @@ export const AuthProvider = ({ children }) => {
   const [role, setRole] = useState(null);
   const [username, setUsername] = useState(null);
 
-  // Check sessionStorage on mount
   useEffect(() => {
     const storedLogin = sessionStorage.getItem('isLoggedIn');
     const storedRole = sessionStorage.getItem('role');
@@ -31,7 +31,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (username, password) => {
     try {
-      const response = await axios.post('http://localhost:3000/api/login', 
+      const response = await axios.post(`${API_BASE_URL}/api/auth/login`, 
         { username, password },
         { withCredentials: true }
       );
@@ -45,11 +45,14 @@ export const AuthProvider = ({ children }) => {
         sessionStorage.setItem('isLoggedIn', 'true');
         sessionStorage.setItem('role', data.user.role);
         sessionStorage.setItem('username', data.user.username);
+        sessionStorage.setItem('token', data.token);
         return { success: true };
       } else {
+        console.log(data.message);
         return { success: false, message: data.message };
       }
     } catch (error) {
+      console.error('Login error:', error);
       return { success: false, message: 'Login failed. Please try again.' };
     }
   };
@@ -61,6 +64,7 @@ export const AuthProvider = ({ children }) => {
     sessionStorage.removeItem('isLoggedIn');
     sessionStorage.removeItem('role');
     sessionStorage.removeItem('username');
+    sessionStorage.removeItem('token');
   };
 
   return (

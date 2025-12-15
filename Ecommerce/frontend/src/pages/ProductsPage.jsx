@@ -3,6 +3,7 @@ import Navbar from '../components/Navbar';
 import ProductCard from '../components/ProductCard';
 import Footer from '../components/Footer';
 import axios from 'axios';
+import API_BASE_URL from '../config/api';
 
 function ProductsPage() {
   const [products, setProducts] = useState([]);
@@ -15,7 +16,7 @@ function ProductsPage() {
 
   const fetchProducts = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/api/products');
+      const response = await axios.get(`${API_BASE_URL}/api/products`);
       const data = response.data;
       setProducts(data);
     } catch (error) {
@@ -63,7 +64,7 @@ function ProductsPage() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {filteredProducts.map(product => (
-              <ProductCard key={product.id} product={product} showDiscount={product.discount > 0} />
+              <ProductCard key={product._id} product={product} showDiscount={product.discount > 0} />
             ))}
           </div>
         )}

@@ -14,7 +14,6 @@ const Navbar = () => {
 
   return (
     <>
-      {/* Top Bar */}
       <div className="bg-white border-b">
         <div className="max-w-[1400px] mx-auto px-4">
           <div className="flex items-center justify-between py-2 text-xs">
@@ -45,7 +44,6 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Main Header */}
       <div className="bg-white border-b">
         <div className="max-w-[1400px] mx-auto px-4 py-3">
           <div className="flex items-center space-x-8">
@@ -114,7 +112,6 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Navigation Bar */}
       <div className="bg-white border-b">
         <div className="max-w-[1400px] mx-auto px-4">
           <nav className="flex items-center space-x-6 py-2 text-sm">

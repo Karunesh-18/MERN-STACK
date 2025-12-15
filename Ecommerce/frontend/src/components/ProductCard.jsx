@@ -1,26 +1,40 @@
 import { useState } from 'react';
 import axios from 'axios';
+import { useAuth } from '../context/AuthContext';
+import API_BASE_URL from '../config/api';
 
 const ProductCard = ({ product, showDiscount = true }) => {
   const [adding, setAdding] = useState(false);
+  const { isLoggedIn } = useAuth();
 
   const addToCart = async (e) => {
     e.stopPropagation();
+    
+    if (!isLoggedIn) {
+      console.log('Please login to add items to cart');
+      return;
+    }
+    
     setAdding(true);
     
     try {
-      const response = await axios.post('http://localhost:3000/api/cart', 
-        { productId: product.id, quantity: 1 },
-        { withCredentials: true }
+      const token = sessionStorage.getItem('token');
+      const response = await axios.post(`${API_BASE_URL}/api/cart`, 
+        { productId: product._id, quantity: 1 },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
       );
       
       const data = response.data;
       if (data.success) {
-        alert('Added to cart!');
+        console.log('Added to cart!');
       }
     } catch (error) {
       console.error('Failed to add to cart:', error);
-      alert('Failed to add to cart');
+      console.log('Failed to add to cart');
     } finally {
       setAdding(false);
     }
