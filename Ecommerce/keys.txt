@@ -1,0 +1,7 @@
+chmod 400 "ec_secret_karunesh.pem"
+ec2-13-61-6-213.eu-north-1.compute.amazonaws.com
+ssh -i "ec_secret_karunesh.pem" ubuntu@ec2-13-61-6-213.eu-north-1.compute.amazonaws.com
+13.61.6.213
+
+/home/ubuntu
+W:\VSCODE\CLASS PROJECT\Ecommerce
